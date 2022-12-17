@@ -1,25 +1,44 @@
 import logo from './logo.svg';
 import './App.css';
+import axios from 'axios';
+import { useState } from 'react';
 
 function App() {
+
+  const [cep, setCep] = useState('');
+  const [endereco, setEndereco] = useState([]);
+
+  function buscar(cep) {
+    axios.get(`https://viacep.com.br/ws/06463180/json/`)
+      .then(response => setEndereco(response.data));
+
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='container'>
+      <p>Digite o CEP que deseja buscar</p>
+      <input onChange={setCep} value={cep} placeholder="00000-000" type="text" />
+      <button onClick={() => buscar(cep)}>BUSCAR</button>
+      <div>
+        <p>{endereco.cep}</p>
+      </div>
     </div>
   );
 }
 
 export default App;
+
+/*
+{
+  "cep": "06463-180",
+  "logradouro": "Avenida Diretriz",
+  "complemento": "",
+  "bairro": "Jardim Mutinga",
+  "localidade": "Barueri",
+  "uf": "SP",
+  "ibge": "3505708",
+  "gia": "2069",
+  "ddd": "11",
+  "siafi": "6213"
+}
+*/
